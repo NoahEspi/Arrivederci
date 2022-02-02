@@ -9,8 +9,8 @@ IF MOVEMENT WITH ARROW KEYS IS BEING BUGGY, MAKE SURE THE BLACK WINDOW IS AT FUL
 */
 
 
-let x = 100;
-let y = 100;
+let x = 145;
+let y = 355;
 let energy = 100;
 let energyLoss = false;
 let xspeed;
@@ -36,22 +36,23 @@ class Frog {
   }
 
   move() {
-    this.enemyX = this.enemyX + this.xspeed;
-    this.enemyY = this.enemyY + this.yspeed;
+
+    this.enemyX += this.xspeed;
+    this.enemyY += this.yspeed;
 
     if (this.enemyX + frog.width >= width) {
-      this.xspeed = -this.xspeed;
-      this.enemyX = width - frog.width;
+      this.xspeed = -this.xspeed + Math.random(-0.1, 0.2);
+      this.enemyX = width - frog.height;
     } else if (this.enemyX <= 0) {
-      this.xspeed = -this.xspeed;
+      this.xspeed = -this.xspeed + Math.random(-0.1, 0.2);
       this.enemyX = 0;
     }
 
     if (this.enemyY + frog.height >= height) {
-      this.yspeed = -this.yspeed;
-      this.enemyY = height;
+      this.yspeed = -this.yspeed + Math.random(-0.1, 0.2);
+      this.enemyY = height - frog.height;
     } else if (this.enemyY <= 0) {
-      this.yspeed = -this.yspeed;
+      this.yspeed = -this.yspeed + Math.random(-0.1, 0.2);
       this.enemyY = 0;
     }
   }
@@ -62,8 +63,11 @@ class Frog {
 }
 
 function setup() {
-  frog1 = new Frog(random(width), random(height), 4, 4)
-  // frog2 = new Frog(453, 36, 2, 2)
+  frog1 = new Frog(0, 0, 3, 3)
+  frog2 = new Frog(0, 0, 3, 3)
+  frog3 = new Frog(0, 0, 4, 4,)
+  frog4 = new Frog(0, 0, 2, 2)
+  frog5 = new Frog(0, 0, 4, 4)
   createCanvas(500, 500);
   background('black');
   fill('white');
@@ -227,12 +231,19 @@ function draw() {
   
   frog1.move();
   frog1.show();
+  frog2.move();
+  frog2.show();
+  frog3.move();
+  frog3.show();
+  frog4.move();
+  frog4.show();
+  frog5.move();
+  frog5.show();
 
-  fill('#CFFF99')
+  fill('#FFF3BD')
   rect(8, 7, 100, 5)
-  fill('#87FF00')
+  fill('#FFD100')
   rect(8, 7, energy, 5)
-  // frog2.move();
-  // frog2.show();
+
   // enemy1.create();
 }
