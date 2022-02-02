@@ -1,64 +1,72 @@
 // https://keycode.info/
 // https://p5js.org/reference/
 
+// DVD bouncing
+// https://editor.p5js.org/Lllucas/sketches/zRcCe8EKM
 
 /*
 IF MOVEMENT WITH ARROW KEYS IS BEING BUGGY, MAKE SURE THE BLACK WINDOW IS AT FULL SIZE (pull down the console until you see white)
 */
 
 
-let enemy1; 
-
 let x = 100;
 let y = 100;
 let energy = 100;
 let energyLoss = false;
+let xspeed;
+let frogWidth;
+
+let frog1;
 
 let buttonActive = false;
-
-// class Enemy {
-
-//   constructor(name, size, speed, shape, trackPlayer) {
-//     this.name = name;
-//     this.size = size;
-//     this.speed = speed;
-//     this.shape = shape;
-//     this.enemyX = Math.round(Math.random() * 300);
-//     this.enemyY = Math.round(Math.random() * 300);
-//   }
-
-//   create() {
-//     // console.log(`Spawned enemy! Name: ${this.name}`);
-//     if (this.shape === 'ellipse') {
-//       fill("red");
-//       this.enemyX = 500;
-//       this.enemyY = 0;
-//       ellipse(this.enemyX, this.enemyY, this.size, this.size);
-//     }
-
-//     this.enemyX += 1;
-//     this.enemyY -= 1;
-
-//   }
-  
-  // move() {
-  //   this.enemyX -= this.speed;
-  //   this.enemyY -= this.speed;
-  // }
-
-// }
 
 function preload() {
   spider = loadImage('Spider.png');
   frog = loadImage('phrogFinal2.png');
 }
 
+// frogWidth = frog.width;
+
+class Frog {
+  constructor(enemyX, enemyY, xspeed, yspeed) {
+    this.enemyX = enemyX;
+    this.enemyY = enemyY;
+    this.xspeed = xspeed;
+    this.yspeed = yspeed;
+  }
+
+  move() {
+    this.enemyX = this.enemyX + this.xspeed;
+    this.enemyY = this.enemyY + this.yspeed;
+
+    if (this.enemyX + frog.width >= width) {
+      this.xspeed = -this.xspeed;
+      this.enemyX = width - frog.width;
+    } else if (this.enemyX <= 0) {
+      this.xspeed = -this.xspeed;
+      this.enemyX = 0;
+    }
+
+    if (this.enemyY + frog.height >= height) {
+      this.yspeed = -this.yspeed;
+      this.enemyY = height;
+    } else if (this.enemyY <= 0) {
+      this.yspeed = -this.yspeed;
+      this.enemyY = 0;
+    }
+  }
+  
+  show() {
+    image(frog, this.enemyX, this.enemyY);
+  }
+}
+
 function setup() {
-  // enemy1 = new Enemy("John", 15, 5, 'ellipse');
+  frog1 = new Frog(random(width), random(height), 4, 4)
+  // frog2 = new Frog(453, 36, 2, 2)
   createCanvas(500, 500);
   background('black');
   fill('white');
-  // enemy1.create();
 }
 
 function mousePressed() {
@@ -66,6 +74,7 @@ function mousePressed() {
 }
 
 function draw() {
+
   // sprint key functions
   if (keyIsDown(16) || keyIsDown(13)) {
     if (energy > 2) {
@@ -212,14 +221,18 @@ function draw() {
 
   buttonActive = false;
 
-  // reloads frames and 'animates'
   clear();
   background('black');
   image(spider, x, y);
+  
+  frog1.move();
+  frog1.show();
+
   fill('#CFFF99')
   rect(8, 7, 100, 5)
   fill('#87FF00')
   rect(8, 7, energy, 5)
-  image(frog, 277, 184)
+  // frog2.move();
+  // frog2.show();
   // enemy1.create();
 }
