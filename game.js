@@ -16,7 +16,7 @@ let energyLoss = false;
 let xspeed;
 let frogWidth;
 
-let frog1;
+let frogs = [];
 
 let buttonActive = false;
 
@@ -63,11 +63,12 @@ class Frog {
 }
 
 function setup() {
-  frog1 = new Frog(0, 0, 3, 3)
-  frog2 = new Frog(0, 0, 3, 3)
-  frog3 = new Frog(0, 0, 4, 4,)
-  frog4 = new Frog(0, 0, 2, 2)
-  frog5 = new Frog(0, 0, 4, 4)
+
+  for (let i = 0; i < 5; i++) {
+    randomSpeed = random(1, 4);
+    frogs[i] = new Frog(random(500), 500, randomSpeed, randomSpeed);
+  }
+  
   createCanvas(500, 500);
   background('black');
   fill('white');
@@ -229,16 +230,10 @@ function draw() {
   background('black');
   image(spider, x, y);
   
-  frog1.move();
-  frog1.show();
-  frog2.move();
-  frog2.show();
-  frog3.move();
-  frog3.show();
-  frog4.move();
-  frog4.show();
-  frog5.move();
-  frog5.show();
+  for (let i = 0; i < frogs.length; i++) {
+    frogs[i].move();
+    frogs[i].show();
+  }
 
   fill('#FFF3BD')
   rect(8, 7, 100, 5)
