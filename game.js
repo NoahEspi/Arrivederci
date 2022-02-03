@@ -4,13 +4,9 @@
 // DVD bouncing
 // https://editor.p5js.org/Lllucas/sketches/zRcCe8EKM
 
-/*
-IF MOVEMENT WITH ARROW KEYS IS BEING BUGGY, MAKE SURE THE BLACK WINDOW IS AT FULL SIZE (pull down the console until you see white)
-*/
 
-
-let x = 145;
-let y = 355;
+let x = 75;
+let y = 75;
 let energy = 100;
 let energyLoss = false;
 let xspeed;
@@ -28,11 +24,14 @@ function preload() {
 // frogWidth = frog.width;
 
 class Frog {
-  constructor(enemyX, enemyY, xspeed, yspeed) {
+  constructor(enemyX, enemyY, xspeed, yspeed, name="joe") {
     this.enemyX = enemyX;
     this.enemyY = enemyY;
     this.xspeed = xspeed;
     this.yspeed = yspeed;
+    this.x = x;
+    this.y = y;
+    this.name = name;
   }
 
   move() {
@@ -60,13 +59,23 @@ class Frog {
   show() {
     image(frog, this.enemyX, this.enemyY);
   }
+
+  // checkCollision() {
+    
+  //   if (this.x < this.enemyX + frog.width && this.enemyX < this.x + spider.width && this.y < this.enemyY + frog.height && this.enemyY < this.y + spider.height){
+      
+  //     background(100, 0, 200)
+  //     // console.log(`collision with ${this.name}`);
+
+  //   }
+  // }
 }
 
 function setup() {
 
   for (let i = 0; i < 5; i++) {
-    randomSpeed = random(1, 4);
-    frogs[i] = new Frog(random(500), 500, randomSpeed, randomSpeed);
+    randomSpeed = random(3, 5);
+    frogs[i] = new Frog(random(500), 500, randomSpeed, randomSpeed, i);
   }
   
   createCanvas(500, 500);
@@ -225,16 +234,29 @@ function draw() {
   }
 
   buttonActive = false;
-
+  
   clear();
   background('black');
   image(spider, x, y);
-  
-  for (let i = 0; i < frogs.length; i++) {
-    frogs[i].move();
-    frogs[i].show();
+
+  for (f of frogs) {
+    
+    // f.checkCollision();
+
+    f.move();
+    f.show();
+
+    let d = dist(x + spider.width/2, y - spider.height/4, f.enemyX + frog.width/2, f.enemyY - frog.height/4);
+
+    if (d < frog.width/2 + spider.width/2) {
+      fill('red');
+      rect(387, 47, 10, 10)
+      
+    }
+    
   }
 
+  
   fill('#FFF3BD')
   rect(8, 7, 100, 5)
   fill('#FFD100')
