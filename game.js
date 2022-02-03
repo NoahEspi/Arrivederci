@@ -335,9 +335,11 @@ function draw() {
         textFont('Helvetica');
         textSize(60);
         text("You Died", 131, 169);
-        image(sad, 145, 200, 200, 200);
+        image(sad, 145, 210, 200, 200);
         textSize(18);
-        text("Press 'space' to continue.", 150, 190)
+        text("Press 'space' to continue.", 140, 210)
+        textSize(18);
+        text(`You survived for ${timer} seconds`, 140, 190);
         dead = true;
       }
       
