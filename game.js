@@ -1,17 +1,14 @@
-// https://keycode.info/
-// https://p5js.org/reference/
-
-// DVD bouncing
-// https://editor.p5js.org/Lllucas/sketches/zRcCe8EKM
-
+// preloads images
 function preload() {
   spider = loadImage('Spider.png');
   frog = loadImage('phrogFinal2.png');
   sad = loadImage('sadFace.png');
 }
 
+
 function setup() {
 
+  // setups variables to be reset
   x = 75;
   y = 75;
 
@@ -33,18 +30,23 @@ function setup() {
   frog1011spawn = false;
   frog1213spawn = false;
 
+
+  // adds first 5 frogs
   for (let i = 0; i < 5; i++) {
     randomSpeed = random(3, 5);
     frogs[i] = new Frog(random(500), 500, randomSpeed, randomSpeed, i);
   }
   
+  // creates canvas
   createCanvas(500, 500);
   background('black');
   fill('white');
 }
-// frogWidth = frog.width;
+
 
 class Frog {
+
+  // initializes frog variables
   constructor(enemyX, enemyY, xspeed, yspeed, name="joe") {
     this.enemyX = enemyX;
     this.enemyY = enemyY;
@@ -55,6 +57,7 @@ class Frog {
     this.name = name;
   }
 
+  // frog movement and bouncing off walls
   move() {
 
     this.enemyX += this.xspeed;
@@ -77,15 +80,18 @@ class Frog {
     }
   }
   
+  // displays frog
   show() {
     image(frog, this.enemyX, this.enemyY);
   }
 }
 
+// for ease-of-access. displays coordinate where clicked
 function mousePressed() {
   console.log(`(${mouseX}, ${mouseY})`);
 }
 
+// resets screen if you hit space and you're dead
 function keyPressed() {
   if (keyCode === 32 && dead) {
     setup();
@@ -111,6 +117,7 @@ function draw() {
   // left arrow functions
   if (keyIsDown(LEFT_ARROW) && (x > 10) || keyIsDown(65) && (x > 10)) {
 
+    // energy manipulation
     if (energyLoss && !buttonActive) {
       
       buttonActive = true;
@@ -121,13 +128,11 @@ function draw() {
       if (energy > 0) {
 
         energy -= 1.5
-        // console.log(`Losing energy! ${energy}`)
 
       }
 
     } else if (energy < 100 && !buttonActive) {
         energy += 0.25
-        // console.log(`Recovering! ${energy}`)
     }
 
     x -= speed;
@@ -135,7 +140,6 @@ function draw() {
   } else {
     if (energy < 100 && !buttonActive){
       energy += 0.25
-      // console.log(`Recovering! ${energy}`)
 
     buttonActive = false;
     }
@@ -154,13 +158,11 @@ function draw() {
       if (energy > 0) {
 
         energy -= 1.75
-        // console.log(`Losing energy! ${energy}`)
 
       }
 
     } else if (energy < 100 && !buttonActive) {
         energy += 0.25
-        // console.log(`Recovering! ${energy}`)
     }
 
     x += speed;
@@ -168,7 +170,6 @@ function draw() {
   } else {
     if (energy < 100 && !buttonActive){
       energy += 0.25
-      // console.log(`Recovering! ${energy}`)
 
     buttonActive = false;
     }
@@ -187,13 +188,11 @@ function draw() {
       if (energy > 0) {
 
         energy -= 2
-        // console.log(`Losing energy! ${energy}`)
 
       }
 
     } else if (energy < 100 && !buttonActive) {
         energy += 0.25
-        // console.log(`Recovering! ${energy}`)
     }
 
     y += speed;
@@ -201,7 +200,6 @@ function draw() {
   } else {
     if (energy < 100 && !buttonActive){
       energy += 0.25
-      // console.log(`Recovering! ${energy}`)
 
     buttonActive = false;
     }
@@ -221,12 +219,10 @@ function draw() {
 
       if (energy > 0) {
         energy -= 2.25
-        // console.log(`Losing energy! ${energy}`)
       }
 
     } else if (energy < 100 && !buttonActive) {
         energy += 0.25
-        // console.log(`Recovering! ${energy}`)
     }
 
     y -= speed;
@@ -234,7 +230,6 @@ function draw() {
   } else {
     if (energy < 100 && !buttonActive){
       energy += 0.25
-      // console.log(`Recovering! ${energy}`)
 
     buttonActive = false;
     }
@@ -242,6 +237,7 @@ function draw() {
 
   buttonActive = false;
   
+  // once timer hits 30, adds two more fast frogs
   if (timer >= 30 && !frog67spawn && !dead) {
     fill('green');
     frog6 = new Frog(random(500), 500, 5, 5);
@@ -251,6 +247,7 @@ function draw() {
     frog67spawn = true;
     }
 
+  // once timer hits 60, adds two more even faster frogs
   if (timer >= 60 && !frog89spawn && !dead) {
     frog8 = new Frog(random(500), 500, 6, 6);
     frog9 = new Frog(random(500), 500, 6, 6);
@@ -258,6 +255,8 @@ function draw() {
     frogs.push(frog9);
     frog89spawn = true;
   }
+
+  // once timer hits 90, adds two more EVEN FASTER frogs
   if (timer >= 90 && !frog1011spawn && !dead) {
     frog10 = new Frog(random(500), 500, 7, 7);
     frog11 = new Frog(random(500), 500, 7, 7);
@@ -265,6 +264,8 @@ function draw() {
     frogs.push(frog11);
     frog1011spawn = true;
   }
+
+  // once timer hits 120, adds two EVEN FASTERRRR frogs
   if (timer >= 120 && !frog1213spawn && !dead) {
     frog12 = new Frog(random(500), 500, 8, 8);
     frog13 = new Frog(random(500), 500, 8, 8);
@@ -272,16 +273,20 @@ function draw() {
     frogs.push(frog13);
     frog1213spawn = true;
   }
+
+  // once timer hits 4 minutes, you die.
   if (timer >= 240 && !dead) {
     timer = "Die."
     frogDeath = new Frog(random(500), 500, 10, 10);
     frogs.push(frogDeath);
   }
 
+  // frame "animation"
   clear();
   background('black');
   image(spider, x, y);
 
+  // stamina bar and text
   textSize(12);
   fill('#FFFFFF')
   rect(8, 7, 100, 5)
@@ -290,17 +295,19 @@ function draw() {
   textFont('Verdana');
   text("stamina", 115, 13.5)
 
+  // life bar and text
   fill('#FFFFFF')
   rect(396, 7, 100, 5);
   fill('red');
   rect(396, 7, life, 5);
   text("life", 375, 13.5)
 
+  // timer
   fill('#FFFFFF')
   textFont("Open Sans")
   text(timer, 247, 13.5)
 
-
+  // timer calculation
   dTime = deltaTime / 1000;
 
   if (dTime < 1) {
@@ -310,18 +317,23 @@ function draw() {
   }
   
 
+  // moves and shows frogs
   for (f of frogs) {
-    
-    // f.checkCollision();
+
 
     f.move();
     f.show();
 
+
+    // checks collision 
     let d = dist(x + spider.width/2, y - spider.height/4, f.enemyX + frog.width/2, f.enemyY - frog.height/4);
 
     if (d < frog.width/2 + spider.width/2) {
       fill('red')
       text("-1", 485, 25);
+
+
+      // checks and ends game if you run out of life
 
       if (life > 0) {
         life -= 2;
@@ -347,5 +359,4 @@ function draw() {
     
   }
 
-  // enemy1.create();
 }
