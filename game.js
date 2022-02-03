@@ -109,7 +109,7 @@ function draw() {
 
 
   // left arrow functions
-  if (keyIsDown(65) && (x > 10)) {
+  if (keyIsDown(LEFT_ARROW) && (x > 10) || keyIsDown(65) && (x > 10)) {
 
     if (energyLoss && !buttonActive) {
       
@@ -142,7 +142,7 @@ function draw() {
   }
 
   // right arrow functions
-  if (keyIsDown(68) && (x < 440)) {
+  if (keyIsDown(RIGHT_ARROW) && (x < 440) || keyIsDown(68) && (x < 440)) {
 
     if (energyLoss && !buttonActive) {
       
@@ -175,7 +175,7 @@ function draw() {
   }
 
   // down arrow functions
-  if (keyIsDown(83) && (y < 440)) {
+  if (keyIsDown(DOWN_ARROW) && (y < 440) || keyIsDown(83) && (y < 440)) {
 
     if (energyLoss && !buttonActive) {
       
@@ -209,7 +209,7 @@ function draw() {
   
 
   // left arrow functions
-  if (keyIsDown(87) && (y > 15)) {
+  if (keyIsDown(UP_ARROW) && (y > 15) || keyIsDown(87) && (y > 15)) {
 
     if (energyLoss && !buttonActive) {
       
@@ -335,9 +335,11 @@ function draw() {
         textFont('Helvetica');
         textSize(60);
         text("You Died", 131, 169);
-        image(sad, 145, 200, 200, 200);
+        image(sad, 145, 210, 200, 200);
         textSize(18);
-        text("Press 'space' to continue.", 150, 190)
+        text("Press 'space' to continue.", 140, 210)
+        textSize(18);
+        text(`You survived for ${timer} seconds`, 140, 190);
         dead = true;
       }
       
