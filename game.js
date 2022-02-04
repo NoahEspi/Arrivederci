@@ -37,8 +37,24 @@ function setup() {
     frogs[i] = new Frog(random(500), 500, randomSpeed, randomSpeed, i);
   }
   
+  // adds html text below the canvas because I didn't know how to do it in actual html :v
+  let movementTxt = createElement('p', 'Use the arrow keys or wasd to move.');
+  movementTxt.position(200, 485);
+  let shiftTxt = createElement('p', 'Use shift to sprint, but be careful, this uses stamina.');
+  shiftTxt.position(200, 505)
+  let frogSpawnTxt = createElement('p', 'In increments of 30 sec., extra frogs will spawn at the bottom of the screen.');
+  frogSpawnTxt.position(200, 525);
+  let avoidScrn = createElement('p', 'Avoid the bottom of the screen during these times.');
+  avoidScrn.position(200, 545);
+  let objective = createElement('p', 'The object of this game is to survive as long as possible, in increasingly harder waves.');
+  objective.position(200, 565);
+  let havefun = createElement('p', 'Have fun!');
+  havefun.position(200, 585);
+  
+
   // creates canvas
-  createCanvas(500, 500);
+  let canvas = createCanvas(500, 500);
+  canvas.position(200, 0);
   background('black');
   fill('white');
 }
@@ -296,22 +312,26 @@ function draw() {
   text("stamina", 115, 13.5)
 
   // life bar and text
-  fill('#FFFFFF')
+  fill('#FFFFFF');
   rect(396, 7, 100, 5);
   fill('red');
   rect(396, 7, life, 5);
-  text("life", 375, 13.5)
+  text("life", 375, 13.5);
 
   // timer
-  fill('#FFFFFF')
-  textFont("Open Sans")
-  text(timer, 247, 13.5)
+  fill('#FFFFFF');
+  textFont("Open Sans");
+  text(timer, 247, 13.5);
+
+  // rules
+  fill('black');
+  textSize(18);
 
   // timer calculation
   dTime = deltaTime / 1000;
 
   if (dTime < 1) {
-    deltaTimer += dTime
+    deltaTimer += dTime;
 
     timer = deltaTimer.toString().split(".")[0];
   }
@@ -329,7 +349,7 @@ function draw() {
     let d = dist(x + spider.width/2, y - spider.height/4, f.enemyX + frog.width/2, f.enemyY - frog.height/4);
 
     if (d < frog.width/2 + spider.width/2) {
-      fill('red')
+      fill('red');
       text("-1", 485, 25);
 
 
@@ -349,7 +369,7 @@ function draw() {
         text("You Died", 131, 169);
         image(sad, 145, 210, 200, 200);
         textSize(18);
-        text("Press 'space' to continue.", 140, 210)
+        text("Press 'space' to continue.", 140, 210);
         textSize(18);
         text(`You survived for ${timer} seconds`, 140, 190);
         dead = true;
