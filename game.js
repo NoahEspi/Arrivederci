@@ -46,10 +46,6 @@ function setup() {
   frogSpawnTxt.position(200, 525);
   let avoidScrn = createElement('p', 'Avoid the bottom of the screen during these times.');
   avoidScrn.position(200, 545);
-  let objective = createElement('p', 'The object of this game is to survive as long as possible, in increasingly harder waves.');
-  objective.position(200, 565);
-  let havefun = createElement('p', 'Have fun!');
-  havefun.position(200, 585);
   
 
   // creates canvas
