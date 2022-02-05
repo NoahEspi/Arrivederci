@@ -1,8 +1,13 @@
 // preloads images
 function preload() {
   spider = loadImage('Spider.png');
-  frog = loadImage('phrogFinal2.png');
   sad = loadImage('sadFace.png');
+
+  fastFrog = loadImage('FrogsPixArt/BasicFrog.png');
+  frog = loadImage('FrogsPixArt/FastFrog.png');
+  fasterFrog = loadImage('FrogsPixArt/FasterFrog.png');
+  fastestFrog = loadImage('FrogsPixArt/FastestFrog.png');
+  frogDeath = loadImage('FrogsPixArt/FrogDeath.png');
 }
 
 
@@ -21,6 +26,7 @@ function setup() {
   timer = 0;
 
   frogs = [];
+  frogNames = [frog, fastFrog, fasterFrog, fastestFrog, frogDeath];
 
   dead = false;
 
@@ -34,7 +40,7 @@ function setup() {
   // adds first 5 frogs
   for (let i = 0; i < 5; i++) {
     randomSpeed = random(3, 5);
-    frogs[i] = new Frog(random(500), 500, randomSpeed, randomSpeed, i);
+    frogs[i] = new Frog(random(500), 500, randomSpeed, randomSpeed, frog);
   }
   
   // adds html text below the canvas because I didn't know how to do it in actual html :v
@@ -59,14 +65,14 @@ function setup() {
 class Frog {
 
   // initializes frog variables
-  constructor(enemyX, enemyY, xspeed, yspeed, name="joe") {
+  constructor(enemyX, enemyY, xspeed, yspeed, file) {
     this.enemyX = enemyX;
     this.enemyY = enemyY;
     this.xspeed = xspeed;
     this.yspeed = yspeed;
     this.x = x;
     this.y = y;
-    this.name = name;
+    this.file = file;
   }
 
   // frog movement and bouncing off walls
@@ -94,7 +100,7 @@ class Frog {
   
   // displays frog
   show() {
-    image(frog, this.enemyX, this.enemyY);
+    image(this.file, this.enemyX, this.enemyY);
   }
 }
 
@@ -252,8 +258,8 @@ function draw() {
   // once timer hits 30, adds two more fast frogs
   if (timer >= 30 && !frog67spawn && !dead) {
     fill('green');
-    frog6 = new Frog(random(500), 500, 5, 5);
-    frog7 = new Frog(random(500), 500, 5, 5);
+    frog6 = new Frog(random(500), 500, 5, 5, fastFrog);
+    frog7 = new Frog(random(500), 500, 5, 5, fastFrog);
     frogs.push(frog6);
     frogs.push(frog7);
     frog67spawn = true;
@@ -261,8 +267,8 @@ function draw() {
 
   // once timer hits 60, adds two more even faster frogs
   if (timer >= 60 && !frog89spawn && !dead) {
-    frog8 = new Frog(random(500), 500, 6, 6);
-    frog9 = new Frog(random(500), 500, 6, 6);
+    frog8 = new Frog(random(500), 500, 6, 6, fasterFrog);
+    frog9 = new Frog(random(500), 500, 6, 6, fasterFrog);
     frogs.push(frog8);
     frogs.push(frog9);
     frog89spawn = true;
@@ -270,8 +276,8 @@ function draw() {
 
   // once timer hits 90, adds two more EVEN FASTER frogs
   if (timer >= 90 && !frog1011spawn && !dead) {
-    frog10 = new Frog(random(500), 500, 7, 7);
-    frog11 = new Frog(random(500), 500, 7, 7);
+    frog10 = new Frog(random(500), 500, 7, 7, fastestFrog);
+    frog11 = new Frog(random(500), 500, 7, 7, fastestFrog);
     frogs.push(frog10);
     frogs.push(frog11);
     frog1011spawn = true;
@@ -279,8 +285,8 @@ function draw() {
 
   // once timer hits 120, adds two EVEN FASTERRRR frogs
   if (timer >= 120 && !frog1213spawn && !dead) {
-    frog12 = new Frog(random(500), 500, 8, 8);
-    frog13 = new Frog(random(500), 500, 8, 8);
+    frog12 = new Frog(random(500), 500, 8, 8, frogDeath);
+    frog13 = new Frog(random(500), 500, 8, 8, frogDeath);
     frogs.push(frog12);
     frogs.push(frog13);
     frog1213spawn = true;
@@ -289,8 +295,8 @@ function draw() {
   // once timer hits 4 minutes, you die.
   if (timer >= 240 && !dead) {
     timer = "Die."
-    frogDeath = new Frog(random(500), 500, 10, 10);
-    frogs.push(frogDeath);
+    frogStampede = new Frog(random(500), 500, 10, 10, random(frogNames));
+    frogs.push(frogStampede);
   }
 
   // frame "animation"
@@ -345,6 +351,7 @@ function draw() {
     let d = dist(x + spider.width/2, y - spider.height/4, f.enemyX + frog.width/2, f.enemyY - frog.height/4);
 
     if (d < frog.width/2 + spider.width/2) {
+      textSize(12);
       fill('red');
       text("-1", 485, 25);
 
