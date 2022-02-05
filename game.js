@@ -39,8 +39,7 @@ function setup() {
 
   // adds first 5 frogs
   for (let i = 0; i < 5; i++) {
-    randomSpeed = random(3, 5);
-    frogs[i] = new Frog(random(500), 500, randomSpeed, randomSpeed, frog);
+    frogs[i] = new Frog(random(500), 500, 4, 4, frog);
   }
   
   // adds html text below the canvas because I didn't know how to do it in actual html :v
@@ -82,18 +81,18 @@ class Frog {
     this.enemyY += this.yspeed;
 
     if (this.enemyX + frog.width >= width) {
-      this.xspeed = -this.xspeed + Math.random(-0.1, 0.2);
+      this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
       this.enemyX = width - frog.height;
     } else if (this.enemyX <= 0) {
-      this.xspeed = -this.xspeed + Math.random(-0.1, 0.2);
+      this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
       this.enemyX = 0;
     }
 
     if (this.enemyY + frog.height >= height) {
-      this.yspeed = -this.yspeed + Math.random(-0.1, 0.2);
+      this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
       this.enemyY = height - frog.height;
     } else if (this.enemyY <= 0) {
-      this.yspeed = -this.yspeed + Math.random(-0.1, 0.2);
+      this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
       this.enemyY = 0;
     }
   }
@@ -342,9 +341,11 @@ function draw() {
   // moves and shows frogs
   for (f of frogs) {
 
-
-    f.move();
-    f.show();
+    if (!dead) {
+      f.move();
+      f.show();
+    }
+    
 
 
     // checks collision 
