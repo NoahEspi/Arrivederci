@@ -96,7 +96,7 @@ function setup() {
   x = 75;
   y = 75;
 
-  life = 10000000;
+  life = 100;
   energy = 100;
   energyLoss = false;
 
@@ -342,17 +342,17 @@ function draw() {
   }
 
   clear();
-  
-  // creates hearts in increments of 35 seconds
-  heartConsumable(35, 35);
+
+  // frame "animation"
+  background('black');
+
+  heartConsumable(5, 35);
   heartConsumable(70, 35);
   heartConsumable(105, 35);
   heartConsumable(140, 35);
   heartConsumable(175, 35);
   heartConsumable(210, 35);
-
-  // frame "animation"
-  background('black');
+  
   image(spider, x, y);
 
   // stamina bar and text
