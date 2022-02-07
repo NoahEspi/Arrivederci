@@ -1,64 +1,49 @@
 // preloads images
 function preload() {
-  spider = loadImage('Spider.png');
-  sad = loadImage('sadFace.png');
+  spider = loadImage('Images/Spider.png');
+  sad = loadImage('Images/sadFace.png');
 
-  fastFrog = loadImage('FrogsPixArt/BasicFrog.png');
-  frog = loadImage('FrogsPixArt/FastFrog.png');
-  fasterFrog = loadImage('FrogsPixArt/FasterFrog.png');
-  fastestFrog = loadImage('FrogsPixArt/FastestFrog.png');
-  frogDeath = loadImage('FrogsPixArt/FrogDeath.png');
+  fastFrog = loadImage('Images/FrogsPixArt/FastFrog.png');
+  frog = loadImage('Images/FrogsPixArt/BasicFrog.png');
+  fasterFrog = loadImage('Images/FrogsPixArt/FasterFrog.png');
+  fastestFrog = loadImage('Images/FrogsPixArt/FastestFrog.png');
+  frogDeath = loadImage('Images/FrogsPixArt/FrogDeath.png');
+
+  heart = loadImage('Images/HeartLife.png');
 }
 
 
-function setup() {
+// creates a consumable heart that restores 30 health
+function heartConsumable(startTime, lifeSpan) {
 
-  // setups variables to be reset
-  x = 75;
-  y = 75;
+  if (timer >= startTime && timer < startTime+(lifeSpan-2) && !dead) {
 
-  life = 100;
-  energy = 100;
-  energyLoss = false;
+    if (!consumedHeart) {
 
-  dTime = 0;
-  deltaTimer = 0;
-  timer = 0;
+      image(heart, heartX, heartY);
+      
+      let d = dist(x + spider.width/2, y - spider.height/4, heartX + heart.width/2, heartY + heart.height/4 )
 
-  frogs = [];
-  frogNames = [frog, fastFrog, fasterFrog, fastestFrog, frogDeath];
-
-  dead = false;
-
-  buttonActive = false;
-  frog67spawn = false;
-  frog89spawn = false;
-  frog1011spawn = false;
-  frog1213spawn = false;
-
-
-  // adds first 5 frogs
-  for (let i = 0; i < 5; i++) {
-    frogs[i] = new Frog(random(500), 500, 4, 4, frog);
+      if  (d < heart.width/2 + spider.width/2) {
+        consumedHeart = true;
+        heartX = random(100, 400);
+        heartY = random(100, 400);
+        
+        for (var i = 0; i < 30; i++) {
+          if (life < 100) {
+            life += 1;
+            text("+30", 480, 25);
+          }
+        }
+      }
+    }
   }
-  
-  // adds html text below the canvas because I didn't know how to do it in actual html :v
-  let movementTxt = createElement('p', 'Use the arrow keys or wasd to move.');
-  movementTxt.position(200, 485);
-  let shiftTxt = createElement('p', 'Use shift to sprint, but be careful, this uses stamina.');
-  shiftTxt.position(200, 505)
-  let frogSpawnTxt = createElement('p', 'In increments of 30 sec., extra frogs will spawn at the bottom of the screen.');
-  frogSpawnTxt.position(200, 525);
-  let avoidScrn = createElement('p', 'Avoid the bottom of the screen during these times.');
-  avoidScrn.position(200, 545);
-  
 
-  // creates canvas
-  let canvas = createCanvas(500, 500);
-  canvas.position(200, 0);
-  background('black');
-  fill('white');
+  if (timer == startTime+(lifeSpan-1)) {
+    consumedHeart = false;
+  }
 }
+
 
 
 class Frog {
@@ -103,10 +88,69 @@ class Frog {
   }
 }
 
+
+
+function setup() {
+
+  // setups variables to be reset
+  x = 75;
+  y = 75;
+
+  life = 10000000;
+  energy = 100;
+  energyLoss = false;
+
+  dTime = 0;
+  deltaTimer = 0;
+  timer = 0;
+
+  frogs = [];
+  frogNames = [frog, fastFrog, fasterFrog, fastestFrog, frogDeath];
+
+  heartX = random(100, 400);
+  heartY = random(100, 400);
+  consumedHeart = false;
+
+  dead = false;
+
+  buttonActive = false;
+  frog67spawn = false;
+  frog89spawn = false;
+  frog1011spawn = false;
+  frog1213spawn = false;
+
+
+  // adds first 5 frogs
+  for (let i = 0; i < 5; i++) {
+    frogs[i] = new Frog(random(500), 500, 4, 4, frog);
+  }
+  
+  // adds html text below the canvas because I didn't know how to do it in actual html :v
+  let movementTxt = createElement('p', 'Use the arrow keys or wasd to move.');
+  movementTxt.position(200, 485);
+  let shiftTxt = createElement('p', 'Use shift to sprint, but be careful, this uses stamina.');
+  shiftTxt.position(200, 505)
+  let frogSpawnTxt = createElement('p', 'In increments of 30 sec., extra frogs will spawn at the bottom of the screen.');
+  frogSpawnTxt.position(200, 525);
+  let avoidScrn = createElement('p', 'Avoid the bottom of the screen during these times.');
+  avoidScrn.position(200, 545);
+  
+
+  // creates canvas
+  let canvas = createCanvas(500, 500);
+  canvas.position(200, 0);
+  background('black');
+  fill('white');
+}
+
+
+
 // for ease-of-access. displays coordinate where clicked
 function mousePressed() {
   console.log(`(${mouseX}, ${mouseY})`);
 }
+
+
 
 // resets screen if you hit space and you're dead
 function keyPressed() {
@@ -116,6 +160,8 @@ function keyPressed() {
     loop();
   }
 }
+
+
 
 function draw() {
   
@@ -143,9 +189,7 @@ function draw() {
         speed = 5
       }
       if (energy > 0) {
-
         energy -= 1.5
-
       }
 
     } else if (energy < 100 && !buttonActive) {
@@ -161,7 +205,6 @@ function draw() {
     buttonActive = false;
     }
   }
-
   // right arrow functions
   if (keyIsDown(RIGHT_ARROW) && (x < 440) || keyIsDown(68) && (x < 440)) {
 
@@ -191,7 +234,6 @@ function draw() {
     buttonActive = false;
     }
   }
-
   // down arrow functions
   if (keyIsDown(DOWN_ARROW) && (y < 440) || keyIsDown(83) && (y < 440)) {
 
@@ -221,8 +263,6 @@ function draw() {
     buttonActive = false;
     }
   }
-  
-
   // left arrow functions
   if (keyIsDown(UP_ARROW) && (y > 15) || keyIsDown(87) && (y > 15)) {
 
@@ -254,15 +294,18 @@ function draw() {
 
   buttonActive = false;
   
+
   // once timer hits 30, adds two more fast frogs
   if (timer >= 30 && !frog67spawn && !dead) {
+    heartX = random(200, 400);
+    heartY = random(200, 400);
     fill('green');
     frog6 = new Frog(random(500), 500, 5, 5, fastFrog);
     frog7 = new Frog(random(500), 500, 5, 5, fastFrog);
     frogs.push(frog6);
     frogs.push(frog7);
     frog67spawn = true;
-    }
+  }
 
   // once timer hits 60, adds two more even faster frogs
   if (timer >= 60 && !frog89spawn && !dead) {
@@ -282,7 +325,7 @@ function draw() {
     frog1011spawn = true;
   }
 
-  // once timer hits 120, adds two EVEN FASTERRRR frogs
+  // once timer hits 120, adds two EVEN FASTER frogs
   if (timer >= 120 && !frog1213spawn && !dead) {
     frog12 = new Frog(random(500), 500, 8, 8, frogDeath);
     frog13 = new Frog(random(500), 500, 8, 8, frogDeath);
@@ -298,8 +341,17 @@ function draw() {
     frogs.push(frogStampede);
   }
 
-  // frame "animation"
   clear();
+  
+  // creates hearts in increments of 35 seconds
+  heartConsumable(35, 35);
+  heartConsumable(70, 35);
+  heartConsumable(105, 35);
+  heartConsumable(140, 35);
+  heartConsumable(175, 35);
+  heartConsumable(210, 35);
+
+  // frame "animation"
   background('black');
   image(spider, x, y);
 
@@ -328,6 +380,7 @@ function draw() {
   fill('black');
   textSize(18);
 
+
   // timer calculation
   dTime = deltaTime / 1000;
 
@@ -345,8 +398,6 @@ function draw() {
       f.move();
       f.show();
     }
-    
-
 
     // checks collision 
     let d = dist(x + spider.width/2, y - spider.height/4, f.enemyX + frog.width/2, f.enemyY - frog.height/4);
@@ -355,7 +406,6 @@ function draw() {
       textSize(12);
       fill('red');
       text("-1", 485, 25);
-
 
       // checks and ends game if you run out of life
 
@@ -378,9 +428,6 @@ function draw() {
         text(`You survived for ${timer} seconds`, 140, 190);
         dead = true;
       }
-      
     }
-    
   }
-
 }
