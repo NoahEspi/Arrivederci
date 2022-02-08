@@ -138,6 +138,8 @@ function setup() {
 
   rStarX = random(100, 400);
   rStarY = random(100, 400);
+  randTime = random(35, 45);
+
   consumedStar = false;
   invincible = false;
 
@@ -393,7 +395,7 @@ function draw() {
   heartConsumable(175, 35);
   heartConsumable(210, 35);
   
-  if (timer >= 5 && !dead) {
+  if (timer >= randTime && !dead) {
     starConsumable(rStarX, rStarY, 5, 5, inStar)
   }
 
