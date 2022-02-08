@@ -11,10 +11,13 @@ function preload() {
 
   heart = loadImage('Images/HeartLife.png');
   inStar = loadImage('Images/Invincibility.png');
+  icicle = loadImage('Images/icicle.png');
 }
 
 
-// creates a consumable heart that restores 30 health
+////////// consumables \\\\\\\\\\\
+
+// heart container
 function heartConsumable(startTime, lifeSpan) {
 
   if (timer >= startTime && timer < startTime+(lifeSpan-2) && !dead) {
@@ -45,9 +48,8 @@ function heartConsumable(startTime, lifeSpan) {
   }
 }
 
-
-
-function starConsumable(starX, starY, sxSpeed, sySpeed, file) {
+// invincibility star
+function starConsumable(starX, starY, file) {
 
   if ( !consumedStar ) {
 
@@ -69,6 +71,31 @@ function starConsumable(starX, starY, sxSpeed, sySpeed, file) {
   }
 }
 
+// icicle consumable--freezes frogs
+function iceConsumable(iceX, iceY, file) {
+
+  if ( !consumedIce ) {
+    image(file, iceX, iceY)
+    console.log("Ice alive");
+
+    let d = dist(x + spider.width/2, y - file.height/4, iceX + file.width/2, iceY - file.height/4);
+
+    if ( d < file.width/2 + spider.width/2 ) {
+      console.log("Ice collision")
+
+      if ( life > 0 && !frozen ) {
+        consumedIce = true;
+        frozen = true;
+        timeGot = parseInt(timer);
+        tint("#40EAED");
+      }
+    }
+  } else if ( parseInt(timer) >= timeGot + 3 && consumedIce ) {
+    frozen = false;
+    noTint();
+  }
+}
+
 
 
 class Frog {
@@ -87,23 +114,25 @@ class Frog {
   // frog movement and bouncing off walls
   move() {
     
-    this.enemyX += this.xspeed;
-    this.enemyY += this.yspeed;
+    if ( !frozen ){
+      this.enemyX += this.xspeed;
+      this.enemyY += this.yspeed;
 
-    if (this.enemyX + frog.width >= width) {
-      this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
-      this.enemyX = width - frog.height;
-    } else if (this.enemyX <= 0) {
-      this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
-      this.enemyX = 0;
-    }
+      if (this.enemyX + frog.width >= width) {
+        this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
+        this.enemyX = width - frog.height;
+      } else if (this.enemyX <= 0) {
+        this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
+        this.enemyX = 0;
+      }
 
-    if (this.enemyY + frog.height >= height) {
-      this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
-      this.enemyY = height - frog.height;
-    } else if (this.enemyY <= 0) {
-      this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
-      this.enemyY = 0;
+      if (this.enemyY + frog.height >= height) {
+        this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
+        this.enemyY = height - frog.height;
+      } else if (this.enemyY <= 0) {
+        this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
+        this.enemyY = 0;
+      }
     }
   }
   
@@ -142,6 +171,13 @@ function setup() {
 
   consumedStar = false;
   invincible = false;
+
+  rIceX = random(100, 400);
+  rIceY = random(100, 400);
+  randTimeIce = random(20, 30);
+
+  frozen = false;
+  consumedIce = false;
 
   timeGot = 1000;
 
@@ -396,7 +432,26 @@ function draw() {
   heartConsumable(210, 35);
   
   if (timer >= randTime && !dead) {
-    starConsumable(rStarX, rStarY, 5, 5, inStar)
+    starConsumable(rStarX, rStarY, inStar)
+  }
+  if (timer >= randTime + 40 && !dead) {
+    starConsumable(rStarX + Math.random(-30, 30), rStarY + Math.random(-30, 30), inStar)
+  }
+  if (timer >= randTime + 80 && !dead) {
+    starConsumable(rStarX + Math.random(-30, 30), rStarY + Math.random(-30, 30), inStar)
+  }
+
+  if (timer >= randTimeIce && !dead) {
+    iceConsumable(rIceX, rIceY, icicle);
+  }
+  if (timer >= randTimeIce+25 && !dead) {
+    iceConsumable(rIceX + Math.random(-30, 30), rIceY + Math.random(-30, 30), icicle);
+  }
+  if (timer >= randTimeIce+50 && !dead) {
+    iceConsumable(rIceX + Math.random(-30, 30), rIceY + Math.random(-30, 30), icicle);
+  }
+  if (timer >= randTimeIce+60 && !dead) {
+    iceConsumable(rIceX + Math.random(-30, 30), rIceY + Math.random(-30, 30), icicle);
   }
 
   // stamina bar and text
