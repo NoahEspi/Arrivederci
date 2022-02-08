@@ -10,6 +10,7 @@ function preload() {
   frogDeath = loadImage('Images/FrogsPixArt/FrogDeath.png');
 
   heart = loadImage('Images/HeartLife.png');
+  inStar = loadImage('Images/Invincibility.png');
 }
 
 
@@ -346,7 +347,7 @@ function draw() {
   // frame "animation"
   background('black');
 
-  heartConsumable(5, 35);
+  heartConsumable(35, 35);
   heartConsumable(70, 35);
   heartConsumable(105, 35);
   heartConsumable(140, 35);
