@@ -58,7 +58,6 @@ function starConsumable(starX, starY, file) {
     let d = dist(x + spider.width/2, y - file.height/4, starX + file.width/2, starY - file.height/4);
 
     if ( d < file.width/2 + spider.width/2 ) {
-      console.log("Star collision")
 
       if ( life > 0 && !invincible ) {
         consumedStar = true;
@@ -76,12 +75,10 @@ function iceConsumable(iceX, iceY, file) {
 
   if ( !consumedIce ) {
     image(file, iceX, iceY)
-    console.log("Ice alive");
 
     let d = dist(x + spider.width/2, y - file.height/4, iceX + file.width/2, iceY - file.height/4);
 
     if ( d < file.width/2 + spider.width/2 ) {
-      console.log("Ice collision")
 
       if ( life > 0 && !frozen ) {
         consumedIce = true;
