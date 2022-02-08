@@ -47,6 +47,30 @@ function heartConsumable(startTime, lifeSpan) {
 
 
 
+function starConsumable(starX, starY, sxSpeed, sySpeed, file) {
+
+  if ( !consumedStar ) {
+
+    image(file, starX, starY)
+
+    let d = dist(x + spider.width/2, y - file.height/4, starX + file.width/2, starY - file.height/4);
+
+    if ( d < file.width/2 + spider.width/2 ) {
+      console.log("Star collision")
+
+      if ( life > 0 && !invincible ) {
+        consumedStar = true;
+        invincible = true;
+        timeGot = parseInt(timer);
+      }
+    }
+  } else if ( parseInt(timer) >= timeGot + 5 && consumedStar ) {
+    invincible = false;
+  }
+}
+
+
+
 class Frog {
 
   // initializes frog variables
@@ -62,7 +86,7 @@ class Frog {
 
   // frog movement and bouncing off walls
   move() {
-
+    
     this.enemyX += this.xspeed;
     this.enemyY += this.yspeed;
 
@@ -111,6 +135,13 @@ function setup() {
   heartX = random(100, 400);
   heartY = random(100, 400);
   consumedHeart = false;
+
+  rStarX = random(100, 400);
+  rStarY = random(100, 400);
+  consumedStar = false;
+  invincible = false;
+
+  timeGot = 1000;
 
   dead = false;
 
@@ -166,6 +197,12 @@ function keyPressed() {
 
 function draw() {
   
+  if (invincible) {
+    lifeColor = 'gold';
+  } else {
+    lifeColor = 'red'
+  }
+
   // sprint key functions
   if (keyIsDown(16) || keyIsDown(13)) {
     if (energy > 2) {
@@ -347,6 +384,8 @@ function draw() {
   // frame "animation"
   background('black');
 
+  image(spider, x, y);
+
   heartConsumable(35, 35);
   heartConsumable(70, 35);
   heartConsumable(105, 35);
@@ -354,7 +393,9 @@ function draw() {
   heartConsumable(175, 35);
   heartConsumable(210, 35);
   
-  image(spider, x, y);
+  if (timer >= 5 && !dead) {
+    starConsumable(rStarX, rStarY, 5, 5, inStar)
+  }
 
   // stamina bar and text
   textSize(12);
@@ -368,9 +409,10 @@ function draw() {
   // life bar and text
   fill('#FFFFFF');
   rect(396, 7, 100, 5);
-  fill('red');
-  rect(396, 7, life, 5);
+  fill('red')
   text("life", 375, 13.5);
+  fill(lifeColor);
+  rect(396, 7, life, 5);
 
   // timer
   fill('#FFFFFF');
@@ -403,7 +445,7 @@ function draw() {
     // checks collision 
     let d = dist(x + spider.width/2, y - spider.height/4, f.enemyX + frog.width/2, f.enemyY - frog.height/4);
 
-    if (d < frog.width/2 + spider.width/2) {
+    if (d < frog.width/2 + spider.width/2 && !invincible) {
       textSize(12);
       fill('red');
       text("-1", 485, 25);
