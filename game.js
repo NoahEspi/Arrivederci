@@ -139,9 +139,9 @@ class Frog {
       if (this.enemyY + frog.height >= height) {
         this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
         this.enemyY = height - frog.height;
-      } else if (this.enemyY <= 0) {
+      } else if (this.enemyY <= 15) {
         this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
-        this.enemyY = 0;
+        this.enemyY = 15;
       }
     }
   }
@@ -170,6 +170,8 @@ function setup() {
 
   frogs = [];
   frogNames = [frog, fastFrog, fasterFrog, fastestFrog, frogDeath];
+
+  colors = ['yellow', 'green', 'blue', 'pink']
 
   heartX = random(100, 400);
   heartY = random(100, 400);
@@ -246,9 +248,9 @@ function keyPressed() {
 function draw() {
   
   if (invincible) {
-    lifeColor = 'gold';
+    lifeColor = random(colors);
   } else {
-    lifeColor = 'red'
+    lifeColor = 'red';
   }
 
   // sprint key functions
