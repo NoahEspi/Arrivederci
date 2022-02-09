@@ -512,6 +512,7 @@ function draw() {
       } else {
         noLoop();
         clear();
+        noTint();
         background(0);
         fill('grey');
         rect(100, 100, 300, 300);
