@@ -443,10 +443,10 @@ function draw() {
   
 
   // spawns stars
-  for (var i = 20; i < 240; i += 20){
+  for (var i = 25; i < 240; i += 25){
     iceConsumable(icicle, 20, i);
   }
-  for (var i = 35; i < 240; i += 35){
+  for (var i = 40; i < 240; i += 40){
     starConsumable(inStar, 35, i);
   }
 
