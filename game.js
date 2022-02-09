@@ -51,7 +51,7 @@ function heartConsumable(startTime, lifeSpan) {
 // invincibility star
 function starConsumable(file, lifespan, starttime) {
 
-  if ( !consumedStar && timer >= starttime && timer < starttime + lifespan-2) {
+  if ( !consumedStar && parseInt(timer) >= starttime && parseInt(timer) < starttime + (lifespan-2)) {
 
     image(file, starX, starY)
 
@@ -71,7 +71,7 @@ function starConsumable(file, lifespan, starttime) {
   } else if ( parseInt(timer) >= timeGot + 5 && consumedStar ) {
     invincible = false;
   }
-  if (timer == timeGot + 5) {
+  if (parseInt(timer) == starttime + (lifespan-1)) {
     consumedStar = false;
   }
 }
@@ -101,7 +101,7 @@ function iceConsumable(file, lifespan, starttime) {
     frozen = false;
     noTint();
   }
-  if (timer == timeGot + 3) {
+  if (timer == starttime + (lifespan-1)) {
     consumedIce = false;
   }
 }
