@@ -49,15 +49,18 @@ function heartConsumable(startTime, lifeSpan) {
 }
 
 // invincibility star
-function starConsumable(starX, starY, file) {
+function starConsumable(file, lifespan, starttime) {
 
-  if ( !consumedStar ) {
+  if ( !consumedStar && timer >= starttime && timer < starttime + lifespan-2) {
 
     image(file, starX, starY)
 
     let d = dist(x + spider.width/2, y - file.height/4, starX + file.width/2, starY - file.height/4);
 
     if ( d < file.width/2 + spider.width/2 ) {
+      
+      starX = random(100, 400);
+      starY = random(100, 400);
 
       if ( life > 0 && !invincible ) {
         consumedStar = true;
@@ -68,17 +71,24 @@ function starConsumable(starX, starY, file) {
   } else if ( parseInt(timer) >= timeGot + 5 && consumedStar ) {
     invincible = false;
   }
+  if (timer == timeGot + 5) {
+    consumedStar = false;
+  }
 }
 
 // icicle consumable--freezes frogs
-function iceConsumable(iceX, iceY, file) {
+function iceConsumable(file, lifespan, starttime) {
 
-  if ( !consumedIce ) {
+  if ( !consumedIce && timer >= starttime && timer < starttime + lifespan-2 ) {
+
     image(file, iceX, iceY)
 
     let d = dist(x + spider.width/2, y - file.height/4, iceX + file.width/2, iceY - file.height/4);
 
     if ( d < file.width/2 + spider.width/2 ) {
+
+      iceX = random(100, 400);
+      iceY = random(100, 400);
 
       if ( life > 0 && !frozen ) {
         consumedIce = true;
@@ -90,6 +100,9 @@ function iceConsumable(iceX, iceY, file) {
   } else if ( parseInt(timer) >= timeGot + 3 && consumedIce ) {
     frozen = false;
     noTint();
+  }
+  if (timer == timeGot + 3) {
+    consumedIce = false;
   }
 }
 
@@ -147,7 +160,7 @@ function setup() {
   x = 75;
   y = 75;
 
-  life = 100;
+  life = 1000000;
   energy = 100;
   energyLoss = false;
 
@@ -162,15 +175,15 @@ function setup() {
   heartY = random(100, 400);
   consumedHeart = false;
 
-  rStarX = random(100, 400);
-  rStarY = random(100, 400);
+  starX = random(100, 400);
+  starY = random(100, 400);
   randTime = random(35, 45);
 
   consumedStar = false;
   invincible = false;
 
-  rIceX = random(100, 400);
-  rIceY = random(100, 400);
+  iceX = random(100, 400);
+  iceY = random(100, 400);
   randTimeIce = random(20, 30);
 
   frozen = false;
@@ -428,27 +441,13 @@ function draw() {
   heartConsumable(175, 35);
   heartConsumable(210, 35);
   
-  if (timer >= randTime && !dead) {
-    starConsumable(rStarX, rStarY, inStar)
-  }
-  if (timer >= randTime + 40 && !dead) {
-    starConsumable(rStarX + Math.random(-30, 30), rStarY + Math.random(-30, 30), inStar)
-  }
-  if (timer >= randTime + 80 && !dead) {
-    starConsumable(rStarX + Math.random(-30, 30), rStarY + Math.random(-30, 30), inStar)
-  }
 
-  if (timer >= randTimeIce && !dead) {
-    iceConsumable(rIceX, rIceY, icicle);
+  // spawns stars
+  for (var i = 20; i < 240; i += 20){
+    iceConsumable(icicle, 20, i);
   }
-  if (timer >= randTimeIce+25 && !dead) {
-    iceConsumable(rIceX + Math.random(-30, 30), rIceY + Math.random(-30, 30), icicle);
-  }
-  if (timer >= randTimeIce+50 && !dead) {
-    iceConsumable(rIceX + Math.random(-30, 30), rIceY + Math.random(-30, 30), icicle);
-  }
-  if (timer >= randTimeIce+60 && !dead) {
-    iceConsumable(rIceX + Math.random(-30, 30), rIceY + Math.random(-30, 30), icicle);
+  for (var i = 35; i < 240; i += 35){
+    starConsumable(inStar, 35, i);
   }
 
   // stamina bar and text
