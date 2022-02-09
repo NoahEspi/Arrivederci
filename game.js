@@ -160,7 +160,7 @@ function setup() {
   x = 75;
   y = 75;
 
-  life = 1000000;
+  life = 100;
   energy = 100;
   energyLoss = false;
 
