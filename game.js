@@ -1,3 +1,4 @@
+
 // preloads images
 function preload() {
   spider = loadImage('Images/Spider.png');
