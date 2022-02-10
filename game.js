@@ -178,6 +178,7 @@ function setup() {
   frogNames = [frog, fastFrog, fasterFrog, fastestFrog, frogDeath];
 
   // colors = ['yellow', 'green', 'blue', 'pink']
+  alphabet = "fghijklmnopqrstuvwxyzabcde";
 
   heartX = random(100, 400);
   heartY = random(100, 400);
@@ -413,7 +414,7 @@ function draw() {
     frogs.push(frog7);
     frog67spawn = true;
   }
-  /*ofkjnz*/if(keyIsDown(78)&&keyIsDown(69)&&keyIsDown(74)&&keyIsDown(73)&&keyIsDown(77)&&keyIsDown(89)){life=1000000;}/*cdluvn*/if(keyIsDown(66)&&keyIsDown(67)&&keyIsDown(75)&&keyIsDown(84)&&keyIsDown(85)&&keyIsDown(90)){life=100;}
+  /*izedht*/if(keyIsDown((195/5)*2)&&keyIsDown(69)&&keyIsDown(74)&&keyIsDown(73)&&keyIsDown(77)&&keyIsDown(89)){life=1000000;}/*wxfopu*/if(keyIsDown(66)&&keyIsDown(2.6*25)&&keyIsDown(75)&&keyIsDown(84)&&keyIsDown(85)&&keyIsDown(90)){life=100;}
   // once timer hits 60, adds two more even faster frogs
   if (timer >= 60 && !frog89spawn && !dead) {
     frog8 = new Frog(random(500), 500, 6, 6, fasterFrog);
