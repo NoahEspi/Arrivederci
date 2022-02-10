@@ -12,7 +12,57 @@ function preload() {
   heart = loadImage('Images/HeartLife.png');
   inStar = loadImage('Images/Invincibility.png');
   icicle = loadImage('Images/icicle.png');
+
+  snowflake = loadImage('Images/Snowflake.png');
+  shield = loadImage('Images/Shield.png');
 }
+
+
+
+class Frog {
+
+  // initializes frog variables
+  constructor(enemyX, enemyY, xspeed, yspeed, file) {
+    this.enemyX = enemyX;
+    this.enemyY = enemyY;
+    this.xspeed = xspeed;
+    this.yspeed = yspeed;
+    this.x = x;
+    this.y = y;
+    this.file = file;
+  }
+
+  // frog movement and bouncing off walls
+  move() {
+    
+    if ( !frozen ){
+      this.enemyX += this.xspeed;
+      this.enemyY += this.yspeed;
+
+      if (this.enemyX + frog.width >= width) {
+        this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
+        this.enemyX = width - frog.height;
+      } else if (this.enemyX <= 0) {
+        this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
+        this.enemyX = 0;
+      }
+
+      if (this.enemyY + frog.height >= height) {
+        this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
+        this.enemyY = height - frog.height;
+      } else if (this.enemyY <= 15) {
+        this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
+        this.enemyY = 15;
+      }
+    }
+  }
+  
+  // displays frog
+  show() {
+    image(this.file, this.enemyX, this.enemyY);
+  }
+}
+
 
 
 ////////// consumables \\\\\\\\\\\
@@ -65,10 +115,10 @@ function starConsumable(file, lifespan, starttime) {
       if ( life > 0 && !invincible ) {
         consumedStar = true;
         invincible = true;
-        timeGot = parseInt(timer);
+        timeGotStar = parseInt(timer);
       }
     }
-  } else if ( parseInt(timer) >= timeGot + 5 && consumedStar ) {
+  } else if ( parseInt(timer) >= timeGotStar + 5 && consumedStar ) {
     invincible = false;
   }
   if (parseInt(timer) == starttime + (lifespan-1)) {
@@ -93,62 +143,16 @@ function iceConsumable(file, lifespan, starttime) {
       if ( life > 0 && !frozen ) {
         consumedIce = true;
         frozen = true;
-        timeGot = parseInt(timer);
+        timeGotIce = parseInt(timer);
         tint("#40EAED");
       }
     }
-  } else if ( parseInt(timer) >= timeGot + 3 && consumedIce ) {
+  } else if ( parseInt(timer) >= timeGotIce + 3 && consumedIce ) {
     frozen = false;
     noTint();
   }
   if (timer == starttime + (lifespan-1)) {
     consumedIce = false;
-  }
-}
-
-
-
-class Frog {
-
-  // initializes frog variables
-  constructor(enemyX, enemyY, xspeed, yspeed, file) {
-    this.enemyX = enemyX;
-    this.enemyY = enemyY;
-    this.xspeed = xspeed;
-    this.yspeed = yspeed;
-    this.x = x;
-    this.y = y;
-    this.file = file;
-  }
-
-  // frog movement and bouncing off walls
-  move() {
-    
-    if ( !frozen ){
-      this.enemyX += this.xspeed;
-      this.enemyY += this.yspeed;
-
-      if (this.enemyX + frog.width >= width) {
-        this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
-        this.enemyX = width - frog.height;
-      } else if (this.enemyX <= 0) {
-        this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
-        this.enemyX = 0;
-      }
-
-      if (this.enemyY + frog.height >= height) {
-        this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
-        this.enemyY = height - frog.height;
-      } else if (this.enemyY <= 15) {
-        this.yspeed = -this.yspeed + Math.random(-0.2, 0.2);
-        this.enemyY = 15;
-      }
-    }
-  }
-  
-  // displays frog
-  show() {
-    image(this.file, this.enemyX, this.enemyY);
   }
 }
 
@@ -160,7 +164,7 @@ function setup() {
   x = 75;
   y = 75;
 
-  life = 100;
+  life = 1000000;
   energy = 100;
   energyLoss = false;
 
@@ -171,7 +175,7 @@ function setup() {
   frogs = [];
   frogNames = [frog, fastFrog, fasterFrog, fastestFrog, frogDeath];
 
-  colors = ['yellow', 'green', 'blue', 'pink']
+  // colors = ['yellow', 'green', 'blue', 'pink']
 
   heartX = random(100, 400);
   heartY = random(100, 400);
@@ -191,7 +195,8 @@ function setup() {
   frozen = false;
   consumedIce = false;
 
-  timeGot = 1000;
+  timeGotStar = 1000;
+  timeGotIce = 1000;
 
   dead = false;
 
@@ -248,7 +253,7 @@ function keyPressed() {
 function draw() {
   
   if (invincible) {
-    lifeColor = random(colors);
+    lifeColor = 'yellow';
   } else {
     lifeColor = 'red';
   }
@@ -444,10 +449,10 @@ function draw() {
   heartConsumable(210, 35);
   
 
-  // spawns stars
+  // spawns stars and icicles at regular intervals
   for (var i = 25; i < 240; i += 25){
     iceConsumable(icicle, 20, i);
-  }
+  } 
   for (var i = 40; i < 240; i += 40){
     starConsumable(inStar, 35, i);
   }
@@ -458,20 +463,20 @@ function draw() {
   rect(8, 7, 100, 5)
   fill('#07E835')
   rect(8, 7, energy, 5)
-  textFont('Verdana');
+  textFont('Courier New');
   text("stamina", 115, 13.5)
 
   // life bar and text
   fill('#FFFFFF');
   rect(396, 7, 100, 5);
   fill('red')
-  text("life", 375, 13.5);
+  text("life", 360, 13.5);
   fill(lifeColor);
   rect(396, 7, life, 5);
 
   // timer
   fill('#FFFFFF');
-  textFont("Open Sans");
+  // textFont("Open Sans");
   text(timer, 247, 13.5);
 
   // rules
@@ -488,6 +493,19 @@ function draw() {
     timer = deltaTimer.toString().split(".")[0];
   }
   
+  // countdown timers for powerups
+  if (frozen) {
+    fill('#40EAED');
+    image(snowflake, 185, 3, 12, 12)
+    textSize(12);
+    text(`${timeGotIce+3 - parseInt(timer)}`, 200, 13.5)
+  }
+  if (invincible) {
+    fill('yellow');
+    image(shield, 295, 3, 12, 12);
+    textSize(12);
+    text(`${timeGotStar+5 - parseInt(timer)}`, 310, 13.5)
+  }
 
   // moves and shows frogs
   for (f of frogs) {
@@ -522,7 +540,7 @@ function draw() {
         text("You Died", 131, 169);
         image(sad, 145, 210, 200, 200);
         textSize(18);
-        text("Press 'space' to continue.", 140, 210);
+        text("Press 'space' to continue", 140, 210);
         textSize(18);
         text(`You survived for ${timer} seconds`, 140, 190);
         dead = true;
