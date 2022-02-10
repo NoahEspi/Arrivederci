@@ -165,6 +165,8 @@ function setup() {
   x = 75;
   y = 75;
 
+  paused = false;
+
   life = 100;
   energy = 100;
   energyLoss = false;
@@ -218,10 +220,12 @@ function setup() {
   movementTxt.position(200, 485);
   let shiftTxt = createElement('p', 'Use shift to sprint, but be careful, this uses stamina.');
   shiftTxt.position(200, 505)
-  let frogSpawnTxt = createElement('p', 'In increments of 30 sec., extra frogs will spawn at the bottom of the screen.');
-  frogSpawnTxt.position(200, 525);
-  let avoidScrn = createElement('p', 'Avoid the bottom of the screen during these times.');
-  avoidScrn.position(200, 545);
+  // let frogSpawnTxt = createElement('p', 'In increments of 30 sec., extra frogs will spawn at the bottom of the screen.');
+  // frogSpawnTxt.position(200, 525);
+  // let avoidScrn = createElement('p', 'Avoid the bottom of the screen during these times.');
+  // avoidScrn.position(200, 545);
+  let pToPause = createElement('p', "Press 'p' at anytime to pause the game.");
+  pToPause.position(200, 525);
   
 
   // creates canvas
@@ -240,12 +244,23 @@ function mousePressed() {
 
 
 
-// resets screen if you hit space and you're dead
 function keyPressed() {
+  // resets screen if you hit space and you're dead
   if (keyCode === 32 && dead) {
     setup();
     draw();
     loop();
+  }
+
+  // pause button
+  if (keyCode === 80 && !dead && !paused) {
+    noLoop();
+    clear();
+    paused = true;
+    timer = "⏸"
+  } else if (keyCode === 80 && !dead && paused){
+    loop();
+    paused = false;
   }
 }
 
@@ -511,7 +526,7 @@ function draw() {
   // moves and shows frogs
   for (f of frogs) {
 
-    if (!dead) {
+    if (!dead && !paused) {
       f.move();
       f.show();
     }
