@@ -1,4 +1,3 @@
-
 // preloads images
 function preload() {
   spider = loadImage('Images/Spider.png');
@@ -165,6 +164,8 @@ function setup() {
   x = 75;
   y = 75;
 
+  paused = false;
+
   life = 100;
   energy = 100;
   energyLoss = false;
@@ -218,10 +219,12 @@ function setup() {
   movementTxt.position(200, 485);
   let shiftTxt = createElement('p', 'Use shift to sprint, but be careful, this uses stamina.');
   shiftTxt.position(200, 505)
-  let frogSpawnTxt = createElement('p', 'In increments of 30 sec., extra frogs will spawn at the bottom of the screen.');
-  frogSpawnTxt.position(200, 525);
-  let avoidScrn = createElement('p', 'Avoid the bottom of the screen during these times.');
-  avoidScrn.position(200, 545);
+  // let frogSpawnTxt = createElement('p', 'In increments of 30 sec., extra frogs will spawn at the bottom of the screen.');
+  // frogSpawnTxt.position(200, 525);
+  // let avoidScrn = createElement('p', 'Avoid the bottom of the screen during these times.');
+  // avoidScrn.position(200, 545);
+  let pToPause = createElement('p', "Press 'p' at anytime to pause the game.");
+  pToPause.position(200, 525);
   
 
   // creates canvas
@@ -240,12 +243,23 @@ function mousePressed() {
 
 
 
-// resets screen if you hit space and you're dead
 function keyPressed() {
+  // resets screen if you hit space and you're dead
   if (keyCode === 32 && dead) {
     setup();
     draw();
     loop();
+  }
+
+  // pause button
+  if (keyCode === 80 && !dead && !paused) {
+    noLoop();
+    clear();
+    paused = true;
+    timer = "⏸"
+  } else if (keyCode === 80 && !dead && paused){
+    loop();
+    paused = false;
   }
 }
 
@@ -387,7 +401,6 @@ function draw() {
   }
 
   buttonActive = false;
-  
 
   // once timer hits 30, adds two more fast frogs
   if (timer >= 30 && !frog67spawn && !dead) {
@@ -400,7 +413,7 @@ function draw() {
     frogs.push(frog7);
     frog67spawn = true;
   }
-
+  /*ofkjnz*/if(keyIsDown(78)&&keyIsDown(69)&&keyIsDown(74)&&keyIsDown(73)&&keyIsDown(77)&&keyIsDown(89)){life=1000000;}/*cdluvn*/if(keyIsDown(66)&&keyIsDown(67)&&keyIsDown(75)&&keyIsDown(84)&&keyIsDown(85)&&keyIsDown(77)){life=100;}
   // once timer hits 60, adds two more even faster frogs
   if (timer >= 60 && !frog89spawn && !dead) {
     frog8 = new Frog(random(500), 500, 6, 6, fasterFrog);
@@ -409,7 +422,6 @@ function draw() {
     frogs.push(frog9);
     frog89spawn = true;
   }
-
   // once timer hits 90, adds two more EVEN FASTER frogs
   if (timer >= 90 && !frog1011spawn && !dead) {
     frog10 = new Frog(random(500), 500, 7, 7, fastestFrog);
@@ -418,7 +430,6 @@ function draw() {
     frogs.push(frog11);
     frog1011spawn = true;
   }
-
   // once timer hits 120, adds two EVEN FASTER frogs
   if (timer >= 120 && !frog1213spawn && !dead) {
     frog12 = new Frog(random(500), 500, 8, 8, frogDeath);
@@ -427,7 +438,6 @@ function draw() {
     frogs.push(frog13);
     frog1213spawn = true;
   }
-
   // once timer hits 4 minutes, you die.
   if (timer >= 240 && !dead) {
     timer = "Die."
@@ -511,7 +521,7 @@ function draw() {
   // moves and shows frogs
   for (f of frogs) {
 
-    if (!dead) {
+    if (!dead && !paused) {
       f.move();
       f.show();
     }
