@@ -15,6 +15,8 @@ function preload() {
 
   snowflake = loadImage('Images/Snowflake.png');
   shield = loadImage('Images/Shield.png');
+
+  // playButton = loadImage('Images/PlayButton.png');
 }
 
 
@@ -237,8 +239,8 @@ function setup() {
 
   if (startMenu) {
     noLoop();
-    startBtn = createButton("Start");
-    startBtn.position(435, 200);
+    startBtn = createImg('Images/PlayButton.png', 'Play Button');
+    startBtn.position(340, 130);
     startBtn.mousePressed(start);
   }
 }
@@ -465,7 +467,9 @@ function draw() {
   // frame "animation"
   background('black');
 
-  image(spider, x, y);
+  if (!startMenu) {
+    image(spider, x, y);
+  }
 
   heartConsumable(35, 35);
   heartConsumable(70, 35);
@@ -536,7 +540,7 @@ function draw() {
   // moves and shows frogs
   for (f of frogs) {
 
-    if (!dead && !paused) {
+    if (!dead && !paused && !startMenu) {
       f.move();
       f.show();
     }
