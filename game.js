@@ -568,6 +568,7 @@ function draw() {
         textFont('Helvetica');
         textSize(60);
         text("You Died", 131, 169);
+        console.log("died")
         image(sad, 145, 210, 200, 200);
         textSize(18);
         text("Press 'space' to continue", 140, 210);
