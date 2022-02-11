@@ -15,6 +15,7 @@ function preload() {
 
   snowflake = loadImage('Images/Snowflake.png');
   shield = loadImage('Images/Shield.png');
+  
 }
 
 
