@@ -1,3 +1,5 @@
+let startMenu = true;
+
 // preloads images
 function preload() {
   spider = loadImage('Images/Spider.png');
@@ -210,8 +212,6 @@ function setup() {
   frog89spawn = false;
   frog1011spawn = false;
   frog1213spawn = false;
-
-  startMenu = true;
 
   // adds first 5 frogs
   for (let i = 0; i < 5; i++) {
