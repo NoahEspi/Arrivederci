@@ -15,7 +15,6 @@ function preload() {
 
   snowflake = loadImage('Images/Snowflake.png');
   shield = loadImage('Images/Shield.png');
-  
 }
 
 
@@ -210,6 +209,7 @@ function setup() {
   frog1011spawn = false;
   frog1213spawn = false;
 
+  startMenu = true;
 
   // adds first 5 frogs
   for (let i = 0; i < 5; i++) {
@@ -234,6 +234,13 @@ function setup() {
   canvas.position(200, 0);
   background('black');
   fill('white');
+
+  if (startMenu) {
+    noLoop();
+    startBtn = createButton("Start");
+    startBtn.position(435, 200);
+    startBtn.mousePressed(start);
+  }
 }
 
 
@@ -254,21 +261,25 @@ function keyPressed() {
   }
 
   // pause button
-  if (keyCode === 80 && !dead && !paused) {
+  if (keyCode === 80 && !dead && !paused && !startMenu) {
     noLoop();
     clear();
     paused = true;
     timer = "⏸"
-  } else if (keyCode === 80 && !dead && paused){
+  } else if (keyCode === 80 && !dead && paused && !startMenu){
     loop();
     paused = false;
   }
 }
 
-
+function start() {
+  loop();
+  startMenu = false;
+  startBtn.hide();
+}
 
 function draw() {
-  
+
   if (invincible) {
     lifeColor = 'yellow';
   } else {
