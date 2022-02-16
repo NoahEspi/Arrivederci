@@ -44,7 +44,7 @@ class Frog {
       this.enemyY += this.yspeed;
 
       if (this.enemyX + frog.width >= width) {
-        this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
+        this.xspeed = -this.xspeed + Math.random(-0.2, 0.2); 
         this.enemyX = width - frog.height;
       } else if (this.enemyX <= 0) {
         this.xspeed = -this.xspeed + Math.random(-0.2, 0.2);
@@ -253,10 +253,15 @@ function mousePressed() {
 }
 
 
-
 function keyPressed() {
   // resets screen if you hit space and you're dead
   if (keyCode === 32 && dead) {
+    setup();
+    draw();
+    loop();
+  }
+
+  if (keyCode === 82) {
     setup();
     draw();
     loop();
@@ -568,7 +573,6 @@ function draw() {
         textFont('Helvetica');
         textSize(60);
         text("You Died", 131, 169);
-        console.log("died")
         image(sad, 145, 210, 200, 200);
         textSize(18);
         text("Press 'space' to continue", 140, 210);
