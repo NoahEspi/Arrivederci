@@ -462,7 +462,7 @@ function draw() {
   }
   // once timer hits 4 minutes, you die.
   if (timer >= 240 && !dead) {
-    timer = "Die."
+    // timer = "Die."
     frogStampede = new Frog(random(500), 500, 10, 10, random(frogNames));
     frogs.push(frogStampede);
   }
